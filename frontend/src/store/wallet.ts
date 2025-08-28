@@ -12,7 +12,18 @@ interface WalletState {
   switchToAvalanche: () => Promise<void>
 }
 
-const AVALANCHE_NETWORKS = {
+const SUPPORTED_NETWORKS = {
+  31337: {
+    chainId: '0x7a69',
+    chainName: 'Hardhat Local',
+    nativeCurrency: {
+      name: 'Ethereum',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    rpcUrls: ['http://127.0.0.1:8545'],
+    blockExplorerUrls: ['http://localhost:8545'],
+  },
   43113: {
     chainId: '0xa869',
     chainName: 'Avalanche Fuji Testnet',
@@ -101,7 +112,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   switchToAvalanche: async () => {
     try {
       const targetChainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || '43113')
-      const networkConfig = AVALANCHE_NETWORKS[targetChainId as keyof typeof AVALANCHE_NETWORKS]
+      const networkConfig = SUPPORTED_NETWORKS[targetChainId as keyof typeof SUPPORTED_NETWORKS]
 
       if (!networkConfig) {
         throw new Error('Unsupported network')
