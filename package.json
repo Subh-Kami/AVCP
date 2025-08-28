@@ -1,0 +1,53 @@
+{
+  "name": "avalanche-verifiable-credentials-platform",
+  "version": "1.0.0",
+  "description": "A decentralized platform for issuing and verifying credentials on Avalanche blockchain",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:local": "hardhat run scripts/deploy.js --network local",
+    "deploy:fuji": "hardhat run scripts/deploy.js --network fuji",
+    "deploy:mainnet": "hardhat run scripts/deploy.js --network mainnet",
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm start",
+    "node:local": "hardhat node",
+    "verify:fuji": "hardhat verify --network fuji",
+    "setup": "npm install && cd frontend && npm install"
+  },
+  "keywords": [
+    "avalanche",
+    "blockchain",
+    "credentials",
+    "nft",
+    "verification",
+    "education",
+    "certificates"
+  ],
+  "author": "AVCP Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+    "@nomicfoundation/hardhat-ethers": "^3.1.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.1.0",
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@nomicfoundation/hardhat-verify": "^1.1.1",
+    "@typechain/ethers-v6": "^0.4.3",
+    "@typechain/hardhat": "^8.0.3",
+    "@types/chai": "^4.3.20",
+    "@types/mocha": "^10.0.10",
+    "chai": "^4.5.0",
+    "dotenv": "^16.3.1",
+    "hardhat": "^2.19.0",
+    "hardhat-gas-reporter": "^1.0.10",
+    "solidity-coverage": "^0.8.16",
+    "ts-node": "^10.9.2",
+    "typechain": "^8.3.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.0",
+    "ethers": "^6.8.0"
+  }
+}
