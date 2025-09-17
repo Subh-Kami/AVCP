@@ -1,0 +1,53 @@
+name: Deploy to Fuji Testnet
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+
+jobs:
+  deploy-fuji:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Compile contracts
+      run: npx hardhat compile
+    
+    - name: Deploy to Fuji
+      run: npx hardhat run scripts/deploy-manual.js --network fuji
+      env:
+        PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
+        SNOWTRACE_API_KEY: ${{ secrets.SNOWTRACE_API_KEY }}
+    
+    - name: Verify contracts
+      run: |
+        if [ -f "deployments/fuji.json" ]; then
+          npx hardhat verify --network fuji $(cat deployments/fuji.json | jq -r '.contracts.IssuerRegistry') ${{ secrets.DEPLOY_ADDRESS }}
+          npx hardhat verify --network fuji $(cat deployments/fuji.json | jq -r '.contracts.CredentialNFT') "AVCP Credentials" "AVCP" $(cat deployments/fuji.json | jq -r '.contracts.IssuerRegistry') ${{ secrets.DEPLOY_ADDRESS }}
+        fi
+      env:
+        SNOWTRACE_API_KEY: ${{ secrets.SNOWTRACE_API_KEY }}
+    
+    - name: Deploy frontend to Vercel
+      uses: amondnet/vercel-action@v20
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        vercel-args: '--prod'
+        working-directory: ./frontend
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
