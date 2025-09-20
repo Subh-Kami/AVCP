@@ -34,6 +34,18 @@ export const CONTRACTS = {
       "event CredentialIssued(uint256 indexed tokenId, address indexed recipient, address indexed issuer, string credentialType, uint256 timestamp)",
       "event CredentialRevoked(uint256 indexed tokenId, address indexed issuer, string reason, uint256 timestamp)"
     ]
+  },
+  VERIFIABLE_PRESENTATION: {
+    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS_VERIFIABLE_PRESENTATION || '',
+    abi: [
+      "function createPresentation(uint256 credentialId, string memory ipfsCid, uint256 nonce) external returns (bytes memory signature)",
+      "function verifyPresentation(tuple(tuple(uint256 credentialId, address holder, address issuer, string ipfsCid, uint256 timestamp, uint256 nonce) claim, bytes signature) presentation) external view returns (bool isValid, tuple(string name, string description, string website, string logoUrl, bool isActive, uint256 registeredAt, uint256 credentialsIssued) issuerInfo)",
+      "function getCompactPresentation(uint256 credentialId, string memory ipfsCid, bytes memory signature) external view returns (string memory compactData)",
+      "function verifyOffline(string memory compactData, string memory fullMetadata) external pure returns (bool basicVerification)",
+      "function usedNonces(address holder, uint256 nonce) external view returns (bool)",
+      "event PresentationCreated(uint256 indexed credentialId, address indexed holder, string ipfsCid, uint256 timestamp)",
+      "event PresentationVerified(uint256 indexed credentialId, bool isValid, uint256 timestamp)"
+    ]
   }
 }
 

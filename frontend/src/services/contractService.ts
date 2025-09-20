@@ -17,7 +17,7 @@ export class ContractService {
   }
 
   // Get contract instance
-  private getContract(contractName: 'ISSUER_REGISTRY' | 'CREDENTIAL_NFT', readonly = false) {
+  private getContract(contractName: 'ISSUER_REGISTRY' | 'CREDENTIAL_NFT' | 'VERIFIABLE_PRESENTATION', readonly = false) {
     const config = CONTRACTS[contractName]
     if (!config.address) {
       throw new Error(`${contractName} address not configured`)
@@ -182,6 +182,45 @@ export class ContractService {
     const contract = this.getContract('CREDENTIAL_NFT', true)
     const total = await contract.totalSupply()
     return Number(total)
+  }
+
+  // Verifiable Presentation Methods
+  async createPresentation(credentialId: number, ipfsCid: string, nonce: number) {
+    const contract = this.getContract('VERIFIABLE_PRESENTATION')
+    const tx = await contract.createPresentation(credentialId, ipfsCid, nonce)
+    return await tx.wait()
+  }
+
+  async verifyPresentationOnChain(presentation: any) {
+    const contract = this.getContract('VERIFIABLE_PRESENTATION', true)
+    const result = await contract.verifyPresentation(presentation)
+    return {
+      isValid: result.isValid,
+      issuerInfo: {
+        name: result.issuerInfo.name,
+        description: result.issuerInfo.description,
+        website: result.issuerInfo.website,
+        logoUrl: result.issuerInfo.logoUrl,
+        isActive: result.issuerInfo.isActive,
+        registeredAt: Number(result.issuerInfo.registeredAt),
+        credentialsIssued: Number(result.issuerInfo.credentialsIssued)
+      }
+    }
+  }
+
+  async getCompactPresentation(credentialId: number, ipfsCid: string, signature: string): Promise<string> {
+    const contract = this.getContract('VERIFIABLE_PRESENTATION', true)
+    return await contract.getCompactPresentation(credentialId, ipfsCid, signature)
+  }
+
+  async verifyOffline(compactData: string, fullMetadata: string): Promise<boolean> {
+    const contract = this.getContract('VERIFIABLE_PRESENTATION', true)
+    return await contract.verifyOffline(compactData, fullMetadata)
+  }
+
+  async isNonceUsed(holder: string, nonce: number): Promise<boolean> {
+    const contract = this.getContract('VERIFIABLE_PRESENTATION', true)
+    return await contract.usedNonces(holder, nonce)
   }
 
   // Utility methods

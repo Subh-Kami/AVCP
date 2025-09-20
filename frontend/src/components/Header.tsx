@@ -26,6 +26,12 @@ export const Header: React.FC = () => {
               <Link href="/credentials" className="text-gray-700 hover:text-avalanche-red font-medium">
                 My Credentials
               </Link>
+              <Link href="/present" className="text-gray-700 hover:text-avalanche-red font-medium">
+                Present
+              </Link>
+              <Link href="/scan" className="text-gray-700 hover:text-avalanche-red font-medium">
+                Scan QR
+              </Link>
               <Link href="/issue" className="text-gray-700 hover:text-avalanche-red font-medium">
                 Issue Credential
               </Link>
@@ -50,6 +56,12 @@ export const Header: React.FC = () => {
             </Link>
             <Link href="/credentials" className="text-gray-700 hover:text-avalanche-red font-medium whitespace-nowrap">
               My Credentials
+            </Link>
+            <Link href="/present" className="text-gray-700 hover:text-avalanche-red font-medium whitespace-nowrap">
+              Present
+            </Link>
+            <Link href="/scan" className="text-gray-700 hover:text-avalanche-red font-medium whitespace-nowrap">
+              Scan QR
             </Link>
             <Link href="/issue" className="text-gray-700 hover:text-avalanche-red font-medium whitespace-nowrap">
               Issue

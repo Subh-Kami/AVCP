@@ -97,6 +97,85 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
+        {/* QR Code Features Section */}
+        <section className="py-20 bg-blue-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Offline QR Verification
+              </h2>
+              <p className="text-xl text-gray-600">
+                Present and verify credentials anywhere, even without internet
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">W3C VC-Style Presentations</h3>
+                <div className="space-y-6">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-4">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Generate QR Presentations</h4>
+                      <p className="text-gray-600">Create verifiable QR codes for your credentials with IPFS metadata storage</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-4">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Offline Verification</h4>
+                      <p className="text-gray-600">Verify credentials instantly with basic signature checking, no internet required</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-4">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Mobile-Friendly Scanner</h4>
+                      <p className="text-gray-600">Scan QR codes using any device camera for instant credential verification</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-8 flex space-x-4">
+                  <Link href="/present" className="btn-primary">
+                    Present Credential
+                  </Link>
+                  <Link href="/scan" className="btn-outline">
+                    Scan QR Code
+                  </Link>
+                </div>
+              </div>
+              
+              <div className="text-center">
+                <div className="bg-white rounded-lg shadow-lg p-8">
+                  <div className="w-48 h-48 bg-gray-100 rounded-lg mx-auto mb-6 flex items-center justify-center">
+                    <svg className="w-24 h-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} 
+                            d="M3 3h18v18H3V3zm3 3v12h12V6H6zm6 2v2h2V8h-2zm-2 4v2h2v-2h-2zm4 0v2h2v-2h-2z" />
+                    </svg>
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">Verifiable QR Code</h4>
+                  <p className="text-sm text-gray-600">Compact presentation with full metadata available offline</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Use Cases Section */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
