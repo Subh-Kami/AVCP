@@ -10,6 +10,7 @@ interface WalletState {
   connectWallet: () => Promise<void>
   disconnectWallet: () => void
   switchToAvalanche: () => Promise<void>
+  refreshSigner: () => Promise<void>
 }
 
 const SUPPORTED_NETWORKS = {
@@ -80,17 +81,48 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       })
 
       // Listen for account changes
-      window.ethereum.on('accountsChanged', (accounts: string[]) => {
+      window.ethereum.on('accountsChanged', async (accounts: string[]) => {
         if (accounts.length === 0) {
           get().disconnectWallet()
         } else {
-          set({ account: accounts[0] })
+          // Get new signer for the new account
+          try {
+            const newProvider = new ethers.BrowserProvider(window.ethereum)
+            const newSigner = await newProvider.getSigner()
+            const newAccount = await newSigner.getAddress()
+            
+            set({ 
+              account: newAccount,
+              provider: newProvider,
+              signer: newSigner
+            })
+          } catch (error) {
+            console.error('Failed to update signer for new account:', error)
+            // Fallback to just updating the account if signer fails
+            set({ account: accounts[0] })
+          }
         }
       })
 
       // Listen for network changes
-      window.ethereum.on('chainChanged', (chainId: string) => {
-        set({ chainId: parseInt(chainId, 16) })
+      window.ethereum.on('chainChanged', async (chainId: string) => {
+        const newChainId = parseInt(chainId, 16)
+        
+        // Get new provider and signer for the new network
+        try {
+          const newProvider = new ethers.BrowserProvider(window.ethereum)
+          const newSigner = await newProvider.getSigner()
+          
+          set({ 
+            chainId: newChainId,
+            provider: newProvider,
+            signer: newSigner
+          })
+        } catch (error) {
+          console.error('Failed to update provider/signer for new network:', error)
+          // Fallback to just updating chainId
+          set({ chainId: newChainId })
+        }
       })
 
     } catch (error) {
@@ -137,6 +169,30 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       }
     } catch (error) {
       console.error('Failed to switch to Avalanche network:', error)
+      throw error
+    }
+  },
+
+  refreshSigner: async () => {
+    try {
+      if (!window.ethereum) {
+        throw new Error('MetaMask is not installed')
+      }
+
+      const provider = new ethers.BrowserProvider(window.ethereum)
+      const signer = await provider.getSigner()
+      const account = await signer.getAddress()
+      const network = await provider.getNetwork()
+      const chainId = Number(network.chainId)
+
+      set({
+        account,
+        chainId,
+        provider,
+        signer,
+      })
+    } catch (error) {
+      console.error('Failed to refresh signer:', error)
       throw error
     }
   },
